@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Product{% endblock %}
+
+{% block bread %}
+    <li class="breadcrumb-item active" aria-current="page">Product</li>
+{% endblock %}
+
+{% block body %}
+<div class="d-flex">
+    {{ include("product/_product.html.twig", {product: product})}}
+</div>
+{% endblock %}

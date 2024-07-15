@@ -1,16 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}Home{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+<h6>All categories</h6>
+{{ include('category/_category_list.html.twig', {categories: categories})}}
 
-    This friendly message is coming from:
+<h6>All products</h6>
+<div class="d-flex">
+    {% if products|length > 0%}
+        {% for product in products %}
+            {{ include("product/_product.html.twig", {product: product})}}
+        {% endfor %}
+    {% else %}
+        No products in database!
+    {% endif %}
 </div>
 {% endblock %}

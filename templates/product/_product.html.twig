@@ -1,0 +1,17 @@
+<div class="card m-1">
+    {# <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="card-img-top" alt="..."> #}
+    {% if product and product.image %}
+        {# <img src="{{ products ~ product.image }}" class="card-img-top" alt="..."> #}
+        <img src="{{ asset('uploads/products/' ~ product.image) }}" class="card-img-top" alt="...">
+    {% else %}
+        <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="card-img-top" alt="...">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">{{ product.name }}</h5>
+        <div class="card-text">{{ product.description }}</div>
+        <div>date: {{ product.dateBought }}</div>
+        <div>price: {{ product.priceBought }}</div>
+        {{ include('category/_category_list.html.twig', {categories: product.category})}}
+        <a class="btn btn-primary" href="{{ path('app_product_one', {product: product.id}) }}">show</a>
+    </div>
+</div>

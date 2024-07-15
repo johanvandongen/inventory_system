@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Categories{% endblock %}
+
+{% block bread %}
+    <li class="breadcrumb-item active" aria-current="page">Categories</li>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <h1>Categories</h1>
+    {% if categories|length > 0%}
+        {% for category in categories %}
+            {{ include("category/_category.html.twig", {category: category})}}
+        {% endfor %}
+    {% else %}
+        No categories in database!
+    {% endif %}
+</div>
+{% endblock %}
