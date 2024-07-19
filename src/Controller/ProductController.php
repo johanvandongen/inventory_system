@@ -2,12 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Image;
 use App\Entity\Product;
 use App\Entity\ProductState;
 use App\Form\AddProductType;
+use App\Form\ImageType;
 use App\Form\ProductStateType;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
+use App\Repository\ImageRepository;
 use App\Repository\ProductRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -40,26 +43,26 @@ class ProductController extends AbstractController
     }
 
     #[Route('/product/{product}/edit', name: 'app_product_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product, ProductRepository $products): Response
+    public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product, ProductRepository $products, ImageRepository $images): Response
     {
+        // Product
         $editProductForm = $this->createForm(ProductType::class, $product);
         $editProductForm->handleRequest($request);
-
         if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
             
             /** @var UploadedFile $imageFile */
-            $imageFile = $editProductForm->get('productImage')->getData();
-            if ($imageFile) {
-                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $safeFilename = $slugger->slug($originalFilename);
-                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
-                try {
-                    $imageFile->move($this->getParameter('products_directory'), $newFilename);
-                } catch (FileException $e) {
-                    // ...
-                }
-                $product->setImage($newFilename);
-            }
+            // $imageFile = $editProductForm->get('productImage')->getData();
+            // if ($imageFile) {
+            //     $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+            //     $safeFilename = $slugger->slug($originalFilename);
+            //     $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+            //     try {
+            //         $imageFile->move($this->getParameter('products_directory'), $newFilename);
+            //     } catch (FileException $e) {
+            //         // ...
+            //     }
+            //     $product->setImage($newFilename);
+            // }
 
             $em->persist($product);
             $em->flush();
@@ -69,6 +72,7 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_product');
         }
 
+        // Product State
         /** @var Product $productStates */
         $productsWithMostRecentState = $products->findProductMostRecentState($product->getId());
         $productState = count($productsWithMostRecentState) > 0 ? $productsWithMostRecentState[0]->getState()[0] : new ProductState();
@@ -86,10 +90,40 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_product_edit', ['product' => $product->getId()]);
         }
 
+        // Product Image
+        $productsMostRecentImage = $images->findProductMostRecentImage($product->getId());
+        $productsMostRecentImage = count($productsMostRecentImage) > 0 ? $productsMostRecentImage[0] : null;
+        $productImage = new Image();
+        $editImageForm = $this->createForm(ImageType::class, $productImage);
+        $editImageForm->handleRequest($request);
+        if ($editImageForm->isSubmitted() && $editImageForm->isValid()) {
+            /** @var UploadedFile $imageFile */
+            $imageFile = $editImageForm->get('path')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                try {
+                    $imageFile->move($this->getParameter('products_directory'), $newFilename);
+                } catch (FileException $e) {
+                    // ...
+                }
+                $productImage->setPath($newFilename);
+                $productImage->setProduct($product);
+                $em->persist($productImage);
+                $em->flush();
+                $this->addFlash('succes', 'Product state has been updated!');
+            }
+
+            return $this->redirectToRoute('app_product_edit', ['product' => $product->getId()]);
+        }
+
         return $this->render('product/edit.html.twig', [
             'editProductForm' => $editProductForm,
             'editStateForm' => $editStateForm,
+            'editImageForm' => $editImageForm,
             'product' => $product,
+            'image' => $productsMostRecentImage,
         ]);
     }
 
@@ -106,7 +140,7 @@ class ProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             
             /** @var UploadedFile $imageFile */
-            $imageFile = $form->get('productImage')->getData();
+            $imageFile = $form->get('image')->getData();
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
                 $safeFilename = $slugger->slug($originalFilename);
@@ -116,7 +150,10 @@ class ProductController extends AbstractController
                 } catch (FileException $e) {
                     // ...
                 }
-                $product->setImage($newFilename);
+                $productImage = new Image();
+                $productImage->setPath($newFilename);
+                $productImage->setProduct($product);
+                $em->persist($productImage);
             }
 
             $productState->setDate(new DateTime());
@@ -128,7 +165,7 @@ class ProductController extends AbstractController
 
             $this->addFlash('succes', 'Product has been added!');
 
-            return $this->redirectToRoute('app_product');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('product/add.html.twig', [

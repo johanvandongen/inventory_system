@@ -2,25 +2,19 @@
 
 namespace App\Form;
 
-use App\Entity\Product;
-use Doctrine\ORM\Mapping\Entity;
-use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use App\Entity\Image;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class AddProductType extends ProductType
+class ImageType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        parent::buildForm($builder, $options);
         $builder
-            ->add('state', CollectionType::class, array(
-                'entry_type' => ProductStateType::class,
-                'entry_options' => array('label' => false),
-            ))
-            ->add('image', FileType::class, [
+            ->add('path', FileType::class, [
                 'label' => 'image (jpg/png)',
                 'mapped'=>false,
                 'required'=>false,
@@ -41,7 +35,7 @@ class AddProductType extends ProductType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Product::class,
+            'data_class' => Image::class,
         ]);
     }
 }

@@ -43,7 +43,7 @@
         {{ form_widget(editProductForm.date_bought, {'attr': {'class': 'form-widget'}})}}
         {{ form_errors(editProductForm.date_bought) }}
     </div>
-    <div>
+    {# <div>
         {{ form_label(editProductForm.productImage, 'Image', {'label_attr': {'class': 'form-label'}}) }}
         <img src="{{ asset('uploads/products/' ~ product.image) }}" id="imagePreview"></img>
         {{ form_widget(editProductForm.productImage, {
@@ -55,7 +55,7 @@
             }}) 
         }}
         {{ form_errors(editProductForm.productImage) }}
-    </div>
+    </div> #}
     <button class="btn-primary" type-"submit">Update product</button>
 {{ form_end(editProductForm) }}
 <div>
@@ -74,6 +74,24 @@
     </div>
 <button class="btn-primary" type-"submit">Update State</button>
 {{ form_end(editStateForm) }}
+
+<h6 class="title">Add Image</h6>
+{{ form_start(editImageForm) }}
+    <div>
+        {{ form_label(editImageForm.path, 'Image', {'label_attr': {'class': 'form-label'}}) }}
+        <img src="{{ asset('uploads/products/' ~ image.path ) }}" id="imagePreview"></img>
+        {{ form_widget(editImageForm.path, {
+            label: '', 
+            mapped: false,
+            attr: {
+                onchange: "previewAvatar(this)",
+                class: 'form-widget'
+            }}) 
+        }}
+        {{ form_errors(editImageForm.path) }}
+    </div>
+<button class="btn-primary" type-"submit">Add Image</button>
+{{ form_end(editImageForm) }}
  {# {{ include("product/_product.html.twig", {product: product})}} #}
 
 <script>

@@ -37,19 +37,23 @@ class Product
     #[ORM\ManyToMany(targetEntity: Category::class, inversedBy: 'product')]
     private Collection $category;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $image = null;
-
     /**
      * @var Collection<int, ProductState>
      */
     #[ORM\OneToMany(targetEntity: ProductState::class, mappedBy: 'product', orphanRemoval: true)]
     private Collection $state;
 
+    /**
+     * @var Collection<int, Image>
+     */
+    #[ORM\OneToMany(targetEntity: Image::class, mappedBy: 'product')]
+    private Collection $image;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
         $this->state = new ArrayCollection();
+        $this->image = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -141,18 +145,6 @@ class Product
         return $this;
     }
 
-    public function getImage(): ?string
-    {
-        return $this->image;
-    }
-
-    public function setImage(?string $image): static
-    {
-        $this->image = $image;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, ProductState>
      */
@@ -177,6 +169,36 @@ class Product
             // set the owning side to null (unless already changed)
             if ($state->getProduct() === $this) {
                 $state->setProduct(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImage(): Collection
+    {
+        return $this->image;
+    }
+
+    public function addImage(Image $image): static
+    {
+        if (!$this->image->contains($image)) {
+            $this->image->add($image);
+            $image->setProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): static
+    {
+        if ($this->image->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getProduct() === $this) {
+                $image->setProduct(null);
             }
         }
 

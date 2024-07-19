@@ -1,11 +1,13 @@
 <div class="max-w-sm bg-white rounded-lg shadow flex flex-col">
-    {# <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="card-img-top" alt="..."> #}
-    {% if product and product.image %}
-        {# <img src="{{ products ~ product.image }}" class="card-img-top" alt="..."> #}
-        <img src="{{ asset('uploads/products/' ~ product.image) }}" class="rounded-t-lg w-full" alt="...">
-    {% else %}
-        <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="rounded-t-lg w-full" alt="...">
-    {% endif %}
+    <div class="relative w-full">
+        {% for image in product.image %}
+            {% if product and image %}
+                <img src="{{ asset('uploads/products/' ~ image.path) }}" class="rounded-t-lg absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+            {% else %}
+                <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="rounded-t-lg w-full" alt="...">
+            {% endif %}
+        {% endfor %}
+    </div>
     <div class="p-5 flex flex-col gap-1 grow justify-start">
 
         <div class="mb-2">

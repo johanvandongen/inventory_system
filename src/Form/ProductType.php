@@ -30,23 +30,21 @@ class ProductType extends AbstractType
                 'choice_label' => 'name',
                 'multiple' => true,
             ])
-            ->add('productImage', FileType::class, [
-                'label' => 'image (jpg/png)',
-                'mapped'=>false,
-                'required'=>false,
-                'constraints' => [
-                    new File([
-                        'maxSize' => '2048k',
-                        'mimeTypes' => [
-                            'image/jpeg',
-                            'image/png'
-                        ],
-                        'mimeTypesMessage' => 'Please upload a valid image'
-                    ])
-                    ],
-                // 'help' => '<img src="/uploads/products/catanIcon2-6694c8ec63976.png" class="admin-preview"/>',
-                // 'help_html' => true,
-            ])
+            // ->add('productImage', FileType::class, [
+            //     'label' => 'image (jpg/png)',
+            //     'mapped'=>false,
+            //     'required'=>false,
+            //     'constraints' => [
+            //         new File([
+            //             'maxSize' => '2048k',
+            //             'mimeTypes' => [
+            //                 'image/jpeg',
+            //                 'image/png'
+            //             ],
+            //             'mimeTypesMessage' => 'Please upload a valid image'
+            //         ])
+            //         ]
+            // ])
             // ->add('state', CollectionType::class, array(
             //     'entry_type' => ProductStateType::class,
             //     'entry_options' => array('label' => false),

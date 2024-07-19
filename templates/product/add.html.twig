@@ -59,10 +59,11 @@
         {{ form_widget(form.date_bought, {'attr': {'class': 'form-widget'}})}}
         {{ form_errors(form.date_bought) }}
     </div>
+    
     <div>
         <img id="imagePreview"></img>
-        {{ form_label(form.productImage, 'Image', {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(form.productImage, {
+        {{ form_label(form.image, 'Image', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.image, {
             label: '', 
             mapped: false,
             attr: {
@@ -70,19 +71,22 @@
                 class: 'form-widget'
             }}) 
         }}
-        {{ form_errors(form.date_bought) }}
+        {{ form_errors(form.image) }}
     </div>
     <button class="btn-primary" type-"submit">Add product</button>
 {{ form_end(form) }}
 <div>
 
 <script>
+    files = []
     function previewAvatar(input) {
         var preview = document.getElementById('imagePreview');
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
                 preview.src = e.target.result;
+                files.push(e.target.result)
+                console.log(files);
             };
             reader.readAsDataURL(input.files[0]);
         }
