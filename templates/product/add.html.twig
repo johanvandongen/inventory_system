@@ -32,11 +32,23 @@
         {{ form_widget(form.quantity, {'attr': {'class': 'form-widget'}})}}
         {{ form_errors(form.quantity) }}
     </div>
-    <div>
+    {# <div>
         {{ form_label(form.state, 'State', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.state, {'attr': {'class': 'form-widget'}})}}
         {{ form_errors(form.state) }}
-    </div>
+    </div> #}
+    {% for s in form.state %}
+        <div>
+            {{ form_label(s.state, 'State', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(s.state, {'attr': {'class': 'form-widget'}})}}
+            {{ form_errors(s.state) }}
+        </div>
+        <div>
+            {{ form_label(s.description, 'State Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(s.description, {'attr': {'class': 'form-widget'}})}}
+            {{ form_errors(s.description) }}
+        </div>
+    {% endfor %}
     <div>
         {{ form_label(form.price_bought, 'Purchase price', {'label_attr': {'class': 'form-label'}}) }}
         {{ form_widget(form.price_bought, {'attr': {'class': 'form-widget'}})}}

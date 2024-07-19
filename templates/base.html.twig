@@ -4,9 +4,7 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         {# <link href="https://cdn.jsdelivr.net/npm/@coreui/coreui@5.0.2/dist/css/coreui.min.css" rel="stylesheet" integrity="sha384-39e9UaGkm/+yp6spIsVfzcs3j7ac7G2cg0hzmDvtG11pT1d7YMnOC26w4wMPhzsL" crossorigin="anonymous"> #}
-        {# <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>"> #}
-        {# {% block stylesheets %}
-        {% endblock %} #}
+        <link rel="icon" href="{{ asset('snowboard_outline_logo_circle_white_thick.png') }}">
         {% block stylesheets %}
             <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
         {% endblock %}
@@ -17,8 +15,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body class="mx-5 my-5 bg-slate-50">
-        <div class="flex flex-col justify-between sm:flex-row">
-            <nav class="mb-2 text-2xl" aria-label="breadcrumb">
+        <div class="flex flex-col justify-between mb-2 sm:flex-row">
+            <nav class="text-2xl" aria-label="breadcrumb">
                 <ol class="flex gap-1">
                     <li class="link-primary"><a href="{{ path('app_home')}}">Home</a></li>
                     {% block bread %}
@@ -28,7 +26,6 @@
             <div class="flex flex-wrap gap-1">
                 <a class="btn-primary" href="{{ path('app_product_add') }}">Add Product</a>
                 <a class="btn-primary" href="{{ path('app_category_add') }}">Add Category</a>
-                {# <a class="btn-primary" href="{{ path('app_categories') }}">Categories</a> #}
             </div>
         </div>
         {% for message in app.flashes('succes') %}
