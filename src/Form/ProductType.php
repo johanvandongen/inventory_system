@@ -6,6 +6,7 @@ use App\Entity\Category;
 use App\Entity\Product;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -42,9 +43,15 @@ class ProductType extends AbstractType
                         ],
                         'mimeTypesMessage' => 'Please upload a valid image'
                     ])
-                ]
+                    ],
+                // 'help' => '<img src="/uploads/products/catanIcon2-6694c8ec63976.png" class="admin-preview"/>',
+                // 'help_html' => true,
             ])
-            ->add('submit', SubmitType::class, ['label'=>'Add Product'])
+            // ->add('state', CollectionType::class, array(
+            //     'entry_type' => ProductStateType::class,
+            //     'entry_options' => array('label' => false),
+            // ))
+            // ->add('submit', SubmitType::class, ['label'=>'Add Product'])
         ;
     }
 

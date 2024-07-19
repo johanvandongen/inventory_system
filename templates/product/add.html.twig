@@ -11,6 +11,33 @@
 <h1>Add Product</h1>
 
 {{ form_start(form) }}
+<div>
+  {{ form_label(form.name, 'name') }}
+  {{ form_widget(form.name)}}
+  {{ form_errors(form.name) }}
+  <img id="avatarPreview"></img>
+  {{ form_row(form.productImage, {
+   label: 'Photo :',
+   mapped: false,
+   attr: {
+    onchange: "previewAvatar(this)"
+   }
+  }) }}
+</div>
+<button type-"submit">Add product</button>
 {{ form_end(form) }}
 
+<script>
+    function previewAvatar(input) {
+        var preview = document.getElementById('avatarPreview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 {% endblock %}
+

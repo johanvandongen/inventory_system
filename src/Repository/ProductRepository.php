@@ -6,6 +6,8 @@ use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function Symfony\Component\DependencyInjection\Loader\Configurator\expr;
+
 /**
  * @extends ServiceEntityRepository<Product>
  */
@@ -30,6 +32,18 @@ class ProductRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
+
+       public function findAllOneState(): array
+       {
+        // return $this->findAll();
+        $qb = $this->createQueryBuilder('p');
+           return $qb
+           ->leftJoin('p.state', 's')->addSelect('s')
+           ->addOrderBy('p.name')->addOrderBy('s.date', 'DESC')->getQuery()->getResult()
+
+            //    ->setMaxResults(10)
+           ;
+       }
 
     //    public function findOneBySomeField($value): ?Product
     //    {

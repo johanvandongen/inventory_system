@@ -3,9 +3,13 @@
 namespace App\Controller;
 
 use App\Entity\Product;
+use App\Entity\ProductState;
+use App\Form\AddProductType;
+use App\Form\ProductStateType;
 use App\Form\ProductType;
 use App\Repository\CategoryRepository;
 use App\Repository\ProductRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -22,7 +26,7 @@ class ProductController extends AbstractController
     {
 
         return $this->render('product/index.html.twig', [
-            'products' => $products->findAll(),
+            'products' => $products->findAllOneState(),
         ]);
     }
 
@@ -35,14 +39,67 @@ class ProductController extends AbstractController
         ]);
     }
 
+    #[Route('/product/{product}/edit', name: 'app_product_edit')]
+    public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product): Response
+    {
+        $editProductForm = $this->createForm(ProductType::class, $product);
+        $editProductForm->handleRequest($request);
+
+        if ($editProductForm->isSubmitted() && $editProductForm->isValid()) {
+            
+            /** @var UploadedFile $imageFile */
+            $imageFile = $editProductForm->get('productImage')->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
+                try {
+                    $imageFile->move($this->getParameter('products_directory'), $newFilename);
+                } catch (FileException $e) {
+                    // ...
+                }
+                $product->setImage($newFilename);
+            }
+
+            $em->persist($product);
+            $em->flush();
+
+            $this->addFlash('succes', 'Product has been added!');
+
+            return $this->redirectToRoute('app_product');
+        }
+
+        $productState = new ProductState();
+        $editStateForm = $this->createForm(ProductStateType::class, $productState);
+        $editStateForm->handleRequest($request);
+        if ($editStateForm->isSubmitted() && $editStateForm->isValid()) {
+            $productState->setDate(new DateTime());
+            $productState->setProduct($product);
+            $em->persist($productState);
+            $em->flush();
+
+            $this->addFlash('succes', 'Product state has been updated!');
+
+            return $this->redirectToRoute('app_product_edit', ['product' => $product->getId()]);
+        }
+
+        return $this->render('product/edit.html.twig', [
+            'editProductForm' => $editProductForm,
+            'editStateForm' => $editStateForm,
+            'product' => $product,
+        ]);
+    }
+
     #[Route('/product/add', name: 'app_product_add', priority: 2)]
     public function addProduct(EntityManagerInterface $em, Request $request, SluggerInterface $slugger): Response
     {
-        $form = $this->createForm(ProductType::class);
         $product = new Product();
-        $form->handleRequest(($request));
+        $productState = new ProductState();
+        $product->getState()->add($productState);
+        $form = $this->createForm(AddProductType::class, $product);
+        $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $product = $form->getData();
             
             /** @var UploadedFile $imageFile */
             $imageFile = $form->get('productImage')->getData();
@@ -55,11 +112,13 @@ class ProductController extends AbstractController
                 } catch (FileException $e) {
                     // ...
                 }
+                $product->setImage($newFilename);
             }
 
+            $productState->setDate(new DateTime());
+            $productState->setProduct($product);
 
-            // $product = $form->getData();
-            $product->setImage($newFilename);
+            $em->persist($productState);
             $em->persist($product);
             $em->flush();
 

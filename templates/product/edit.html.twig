@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Product{% endblock %}
+
+{% block bread %}
+    <li class="breadcrumb-item"><a href="{{ path('app_product_one', {product: product.id}) }}">Product</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+{% endblock %}
+
+{% block body %}
+
+<h1>Edit Product</h1>
+
+{{ form_start(editProductForm) }}
+<div>
+  {{ form_label(editProductForm.name, 'name') }}
+  {{ form_widget(editProductForm.name)}}
+  {{ form_errors(editProductForm.name) }}
+</div>
+<button type-"submit">Save product</button>
+{{ form_end(editProductForm) }}
+<div>-------</div>
+{{ form_start(editStateForm) }}
+<button type-"submit">Save State</button>
+{{ form_end(editStateForm) }}
+ {{ include("product/_product.html.twig", {product: product})}}
+
+{% endblock %}
