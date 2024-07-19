@@ -4,17 +4,22 @@
 
 {% block body %}
 
-<h6>All categories</h6>
+<h6 class="title">All categories</h6>
 {{ include('category/_category_list.html.twig', {categories: categories})}}
 
-<h6>All products</h6>
-<div class="d-flex">
+<h6 class="title">All products</h6>
+
+
+<div class="grid grid-cols-1 gap-4 md:grid-cols-6">
     {% if products|length > 0%}
         {% for product in products %}
+            {{ include("product/_product.html.twig", {product: product})}}
+            {{ include("product/_product.html.twig", {product: product})}}
             {{ include("product/_product.html.twig", {product: product})}}
         {% endfor %}
     {% else %}
         No products in database!
     {% endif %}
 </div>
+{# </div> #}
 {% endblock %}

@@ -3,33 +3,70 @@
 {% block title %}Add Product{% endblock %}
 
 {% block bread %}
-    <li class="breadcrumb-item active" aria-current="page">Add Product</li>
+    <li>/</li><li class="link-primary active" aria-current="page">Add Product</li>
 {% endblock %}
 
 {% block body %}
 
-<h1>Add Product</h1>
+<h1 class="title">Add Product</h1>
 
+<div class="sm:size-fit">
 {{ form_start(form) }}
-<div>
-  {{ form_label(form.name, 'name') }}
-  {{ form_widget(form.name)}}
-  {{ form_errors(form.name) }}
-  <img id="avatarPreview"></img>
-  {{ form_row(form.productImage, {
-   label: 'Photo :',
-   mapped: false,
-   attr: {
-    onchange: "previewAvatar(this)"
-   }
-  }) }}
-</div>
-<button type-"submit">Add product</button>
+    <div>
+        {{ form_label(form.name, 'Name', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.name, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.name) }}
+    </div>
+    <div>
+        {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.description, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.description) }}
+    </div>
+    <div>
+        {{ form_label(form.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.category, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.category) }}
+    </div>
+    <div>
+        {{ form_label(form.quantity, 'Quantity', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.quantity, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.quantity) }}
+    </div>
+    <div>
+        {{ form_label(form.state, 'State', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.state, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.state) }}
+    </div>
+    <div>
+        {{ form_label(form.price_bought, 'Purchase price', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.price_bought, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.price_bought) }}
+    </div>
+    <div>
+        {{ form_label(form.date_bought, 'Purchase Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.date_bought, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(form.date_bought) }}
+    </div>
+    <div>
+        <img id="imagePreview"></img>
+        {{ form_label(form.productImage, 'Image', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.productImage, {
+            label: '', 
+            mapped: false,
+            attr: {
+                onchange: "previewAvatar(this)",
+                class: 'form-widget'
+            }}) 
+        }}
+        {{ form_errors(form.date_bought) }}
+    </div>
+    <button class="btn-primary" type-"submit">Add product</button>
 {{ form_end(form) }}
+<div>
 
 <script>
     function previewAvatar(input) {
-        var preview = document.getElementById('avatarPreview');
+        var preview = document.getElementById('imagePreview');
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {

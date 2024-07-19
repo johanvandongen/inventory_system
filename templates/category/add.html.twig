@@ -3,14 +3,30 @@
 {% block title %}Add Categories{% endblock %}
 
 {% block bread %}
-    <li class="breadcrumb-item active" aria-current="page">Add Category</li>
+    <li>/</li><li class="link-primary active" aria-current="page">Add Category</li>
 {% endblock %}
 
 {% block body %}
 
-<h1>Add Category</h1>
 
-{{ form_start(form) }}
-{{ form_end(form) }}
 
+<h6 class="title">Add Category</h6>
+<div class="sm:size-fit">
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.name, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'form-widget'}})}}
+            {{ form_errors(form.name) }}
+        </div>
+        <div>
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-widget'}})}}
+            {{ form_errors(form.description) }}
+        </div>
+        <button class="btn-primary" type="submit">Add category</buton>
+    {{ form_end(form) }}
+</div>
+
+<h6 class="title">All categories</h6>
+{{ include('category/_category_list.html.twig', {categories: categories})}}
 {% endblock %}

@@ -3,13 +3,17 @@
 {% block title %}All Products{% endblock %}
 
 {% block body %}
-<div class="d-flex">
+{# <div class="container text-center"> #}
+<div class="row row-cols-5">
     {% if products|length > 0%}
         {% for product in products %}
+            {{ include("product/_product.html.twig", {product: product})}}
+            {{ include("product/_product.html.twig", {product: product})}}
             {{ include("product/_product.html.twig", {product: product})}}
         {% endfor %}
     {% else %}
         No products in database!
     {% endif %}
 </div>
+{# </div> #}
 {% endblock %}

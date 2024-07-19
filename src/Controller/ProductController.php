@@ -40,7 +40,7 @@ class ProductController extends AbstractController
     }
 
     #[Route('/product/{product}/edit', name: 'app_product_edit')]
-    public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product): Response
+    public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product, ProductRepository $products): Response
     {
         $editProductForm = $this->createForm(ProductType::class, $product);
         $editProductForm->handleRequest($request);
@@ -69,7 +69,10 @@ class ProductController extends AbstractController
             return $this->redirectToRoute('app_product');
         }
 
-        $productState = new ProductState();
+        /** @var Product $productStates */
+        $productsWithMostRecentState = $products->findProductMostRecentState($product->getId());
+        $productState = count($productsWithMostRecentState) > 0 ? $productsWithMostRecentState[0]->getState()[0] : new ProductState();
+
         $editStateForm = $this->createForm(ProductStateType::class, $productState);
         $editStateForm->handleRequest($request);
         if ($editStateForm->isSubmitted() && $editStateForm->isValid()) {
@@ -94,6 +97,7 @@ class ProductController extends AbstractController
     public function addProduct(EntityManagerInterface $em, Request $request, SluggerInterface $slugger): Response
     {
         $product = new Product();
+        $product->setQuantity(1);
         $productState = new ProductState();
         $product->getState()->add($productState);
         $form = $this->createForm(AddProductType::class, $product);

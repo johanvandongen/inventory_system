@@ -1,5 +1,5 @@
-<div class="d-flex">
+<div class="flex gap-1 flex-wrap">
     {% for category in categories %}
-        <div style="width: fit-content" class="p-1 bg-secondary rounded m-1 text-light">{{ category.name }}</div>
+        <div class="p-2 rounded-2xl bg-green-400">{{ category.name }}</div>
     {% endfor %}
 </div>

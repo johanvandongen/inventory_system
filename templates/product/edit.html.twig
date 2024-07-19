@@ -3,26 +3,89 @@
 {% block title %}Edit Product{% endblock %}
 
 {% block bread %}
-    <li class="breadcrumb-item"><a href="{{ path('app_product_one', {product: product.id}) }}">Product</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+    <li>/</li><li class="link-primary"><a href="{{ path('app_product_one', {product: product.id}) }}">Product</a></li>
+    <li>/</li><li class="link-primary active" aria-current="page">Edit</li>
 {% endblock %}
 
 {% block body %}
 
-<h1>Edit Product</h1>
+<h1 class="title">Edit Product</h1>
 
+<div class="sm:size-fit">
 {{ form_start(editProductForm) }}
-<div>
-  {{ form_label(editProductForm.name, 'name') }}
-  {{ form_widget(editProductForm.name)}}
-  {{ form_errors(editProductForm.name) }}
-</div>
-<button type-"submit">Save product</button>
+    <div>
+        {{ form_label(editProductForm.name, 'Name', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.name, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.name) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.description, 'Description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.description, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.description) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.category, 'Category', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.category, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.category) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.quantity, 'Quantity', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.quantity, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.quantity) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.price_bought, 'Purchase price', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.price_bought, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.price_bought) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.date_bought, 'Purchase Date', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editProductForm.date_bought, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editProductForm.date_bought) }}
+    </div>
+    <div>
+        {{ form_label(editProductForm.productImage, 'Image', {'label_attr': {'class': 'form-label'}}) }}
+        <img src="{{ asset('uploads/products/' ~ product.image) }}" id="imagePreview"></img>
+        {{ form_widget(editProductForm.productImage, {
+            label: '', 
+            mapped: false,
+            attr: {
+                onchange: "previewAvatar(this)",
+                class: 'form-widget'
+            }}) 
+        }}
+        {{ form_errors(editProductForm.productImage) }}
+    </div>
+    <button class="btn-primary" type-"submit">Update product</button>
 {{ form_end(editProductForm) }}
-<div>-------</div>
-{{ form_start(editStateForm) }}
-<button type-"submit">Save State</button>
-{{ form_end(editStateForm) }}
- {{ include("product/_product.html.twig", {product: product})}}
+<div>
 
+<h6 class="title">Edit State</h6>
+{{ form_start(editStateForm) }}
+    <div>
+        {{ form_label(editStateForm.state, 'State', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editStateForm.state, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editStateForm.state) }}
+    </div>
+    <div>
+        {{ form_label(editStateForm.description, 'State description', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(editStateForm.description, {'attr': {'class': 'form-widget'}})}}
+        {{ form_errors(editStateForm.description) }}
+    </div>
+<button class="btn-primary" type-"submit">Update State</button>
+{{ form_end(editStateForm) }}
+ {# {{ include("product/_product.html.twig", {product: product})}} #}
+
+<script>
+    function previewAvatar(input) {
+        var preview = document.getElementById('imagePreview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
 {% endblock %}

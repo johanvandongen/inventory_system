@@ -21,7 +21,7 @@ class CategoryController extends AbstractController
     }
 
     #[Route('/category/add', name: 'app_category_add')]
-    public function addCategory(EntityManagerInterface $em, Request $request): Response
+    public function addCategory(EntityManagerInterface $em, Request $request, CategoryRepository $categories): Response
     {
 
         $form = $this->createForm(CategoryType::class);
@@ -34,11 +34,12 @@ class CategoryController extends AbstractController
 
             $this->addFlash('succes', 'Category has been added!');
 
-            return $this->redirectToRoute('app_categories');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('category/add.html.twig', [
             'form' => $form,
+            'categories' => $categories->findAll(),
         ]);
     }
 }

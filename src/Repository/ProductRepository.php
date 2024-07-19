@@ -45,6 +45,19 @@ class ProductRepository extends ServiceEntityRepository
            ;
        }
 
+       public function findProductMostRecentState($productId): array
+       {
+        // return $this->findAll();
+        $qb = $this->createQueryBuilder('p');
+           return $qb
+        //    ->addSelect('s.state')
+           ->where('p.id = :productId')
+           ->setParameter('productId', $productId)
+           ->leftJoin('p.state', 's')->addSelect('s')
+           ->addOrderBy('s.date', 'DESC')->setMaxResults(2)->getQuery()->getResult()
+           ;
+       }
+
     //    public function findOneBySomeField($value): ?Product
     //    {
     //        return $this->createQueryBuilder('p')
