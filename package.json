@@ -1,0 +1,18 @@
+{
+  "devDependencies": {
+    "@babel/core": "^7.24.9",
+    "@babel/preset-react": "^7.24.7"
+  },
+  "scripts": {
+    "build": "yarn build-react && yarn build-svelte",
+    "build-react": "babel assets/react --out-dir assets/build/react --presets=@babel/preset-react",
+    "build-svelte": "node bin/compile_svelte.js"
+  },
+  "dependencies": {
+    "@babel/cli": "^7.24.8",
+    "babel": "^6.23.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  }
+}

@@ -78,8 +78,20 @@
 <h6 class="title">Add Image</h6>
 {{ form_start(editImageForm) }}
     <div>
-        {{ form_label(editImageForm.path, 'Image', {'label_attr': {'class': 'form-label'}}) }}
-        <img src="{{ asset('uploads/products/' ~ image.path ) }}" id="imagePreview"></img>
+        {{ form_label(editImageForm.path, 'Current images', {'label_attr': {'class': 'form-label'}}) }}
+        <div class="flex">
+            {% if product.image|length >0%}
+                {% for image in product.image %}
+                    {% if product and image %}
+                        <img src="{{ asset('uploads/products/' ~ image.path) }}" class="rounded-t-lg w-full" alt="...">
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                <p class="text-sm italic">No images added for this product</p>
+            {% endif %}
+        </div>
+        <p>Selected image</p>
+        <img id="imagePreview"></img>
         {{ form_widget(editImageForm.path, {
             label: '', 
             mapped: false,

@@ -39,8 +39,19 @@ class ProductController extends AbstractController
 
         return $this->render('product/oneProduct.html.twig', [
             'product' => $product,
+            'images' => array_map(fn($p) => $p->getPath(),  $product->getImage()->toArray())
         ]);
     }
+
+    // #[Route('/product/{product}/{idx}', name: 'app_product_one_idx')]
+    // public function oneProductIdx(int $idx, Product $product): Response
+    // {
+
+    //     return $this->render('product/oneProduct.html.twig', [
+    //         'product' => $product,
+    //         'idx' => $idx,
+    //     ]);
+    // }
 
     #[Route('/product/{product}/edit', name: 'app_product_edit')]
     public function edit(EntityManagerInterface $em, Request $request, SluggerInterface $slugger, Product $product, ProductRepository $products, ImageRepository $images): Response

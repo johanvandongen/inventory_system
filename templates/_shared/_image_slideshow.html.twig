@@ -1,0 +1,49 @@
+<div>
+<div {{ react_component('Hello', { fullName: 'Fabien' }) }}>eyo</div>
+    {% if images|length > 0%}
+        <div class="relative m-auto flex">
+            {# {% set current = 1%} #}
+            {% for key, image in images|slice(0, 2) %}
+                    <div class="w-full">
+                        <img src="{{ asset('uploads/products/' ~ image.path) }}" class="rounded-t-lg w-full" alt="...">
+                    </div>
+            {% endfor %}
+            {# <a></a> #}
+        </div>
+    {% else %}
+        <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="rounded-t-lg w-full" alt="...">
+    {% endif %}
+</div>
+{# <script>
+
+    let slideIndex = 1;
+    showSlides(slideIndex);
+
+    // Next/previous controls
+    function plusSlides(n) {
+    showSlides(slideIndex += n);
+    }
+
+    // Thumbnail image controls
+    function currentSlide(n) {
+    showSlides(slideIndex = n);
+    }
+
+    function showSlides(n) {
+    let i;
+    let slides = document.getElementsByClassName("mySlides");
+    console.log(slides);
+    //let dots = document.getElementsByClassName("dot");
+    if (n > slides.length) {slideIndex = 1}
+    if (n < 1) {slideIndex = slides.length}
+    for (i = 0; i < slides.length; i++) {
+        slides[i].style.display = "none";
+    }
+    //for (i = 0; i < dots.length; i++) {
+    //    dots[i].className = dots[i].className.replace(" active", "");
+    //}
+    slides[slideIndex-1].style.display = "block";
+    //dots[slideIndex-1].className += " active";
+    }
+
+</script> #}

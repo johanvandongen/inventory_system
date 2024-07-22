@@ -1,13 +1,22 @@
 <div class="max-w-sm bg-white rounded-lg shadow flex flex-col">
+
     <div class="relative w-full">
-        {% for image in product.image %}
+        {% for image in product.image|slice(0, 1) %}
             {% if product and image %}
-                <img src="{{ asset('uploads/products/' ~ image.path) }}" class="rounded-t-lg absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt="...">
+                <img src="{{ asset('uploads/products/' ~ image.path) }}" class="rounded-t-lg w-full" alt="...">
             {% else %}
                 <img src="https://gravatar.com/avatar/27205e5c51cb03f862138b22bcb5dc20f94a342e744ff6df1b8dc8af3c865109?f=y" class="rounded-t-lg w-full" alt="...">
             {% endif %}
         {% endfor %}
     </div>
+    {# <div class="relative h-32">
+        {% for key, image in product.image|slice(0, 1) %}
+            <img src="{{ asset('uploads/products/' ~ image.path) }}" class="object-contain rounded-t-lg h-full" alt="...">
+        {% endfor %}
+        <button class="absolute top-1/2 left-0">next</button>
+    </div> #}
+    {# <a href="{{ path('app_product_one_idx', {idx: (idx+1) % product.image|length, product: product.id}) }}">Next</a> #}
+
     <div class="p-5 flex flex-col gap-1 grow justify-start">
 
         <div class="mb-2">
@@ -15,17 +24,17 @@
             <div class="card-text">{{ product.description }}</div>
         </div>
 
-        <div>
-            <p class="font-bold">Purchase</p>
-            {% if product.dateBought and product.priceBought%}
-                <div>{{ product.dateBought|date("F j, Y") }} - &euro;{{ product.priceBought }}</div>
-            {% endif %}
-        </div>
         
         <div>
-            <p class="font-bold">Current State</p>
+            <p class="font-bold">Item State</p>
             {% for state in product.state|slice(0, 1) %}
-                <div>{{ state.state.state }}, {{ state.description }}</div>
+                <div>
+                    {% if state.description %}
+                        <p>{{ state.state.state }}, {{ state.description }}</p>
+                    {% else %}
+                        <p>{{ state.state.state }}</p>
+                    {% endif %}
+                </div>
             {% endfor %}
         </div>
 
@@ -33,6 +42,10 @@
             <p class="font-bold">Category</p>
             {{ include('category/_category_list.html.twig', {categories: product.category})}}
         </div>
-        <a class="btn-primary mt-auto" href="{{ path('app_product_edit', {product: product.id}) }}">Edit</a>
+
+        <div class="mt-auto">
+            <a class="btn-primary" href="{{ path('app_product_one', {product: product.id}) }}">Show</a>
+            <a class="btn-primary" href="{{ path('app_product_edit', {product: product.id}) }}">Edit</a>
+        </div>
     </div>
 </div>
