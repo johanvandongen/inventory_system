@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Validator\Constraints\Date;
 
 class ProductController extends AbstractController
 {
@@ -121,6 +122,8 @@ class ProductController extends AbstractController
                 }
                 $productImage->setPath($newFilename);
                 $productImage->setProduct($product);
+                $productImage->setCreatedAt(new DateTime());
+                $productImage->setPriority(0);
                 $em->persist($productImage);
                 $em->flush();
                 $this->addFlash('succes', 'Product state has been updated!');
@@ -164,6 +167,8 @@ class ProductController extends AbstractController
                 $productImage = new Image();
                 $productImage->setPath($newFilename);
                 $productImage->setProduct($product);
+                $productImage->setCreatedAt(new DateTime());
+                $productImage->setPriority(0);
                 $em->persist($productImage);
             }
 
