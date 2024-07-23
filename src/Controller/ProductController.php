@@ -21,7 +21,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Validator\Constraints\Date;
 
 class ProductController extends AbstractController
 {
@@ -187,5 +186,13 @@ class ProductController extends AbstractController
         return $this->render('product/add.html.twig', [
             'form' => $form,
         ]);
+    }
+
+    #[Route('/product/{product}/delete', name: 'app_product_delete')]
+    public function deleteProduct(EntityManagerInterface $em, Request $request, Product $product): Response
+    {
+        $em->remove($product);
+        $em->flush();
+        return $this->redirectToRoute('app_home');
     }
 }

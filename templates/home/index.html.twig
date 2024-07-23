@@ -4,7 +4,7 @@
 
 {% block body %}
 
-<h6 class="title">All categories</h6>
+<h6 class="title"><a href="{{ path('app_categories', {categories: categories})}}">All categories</a></h6>
 {{ include('category/_category_list.html.twig', {categories: categories})}}
 
 <h6 class="title">All products</h6>

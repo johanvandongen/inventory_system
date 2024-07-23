@@ -104,6 +104,8 @@
     </div>
 <button class="btn-primary" type-"submit">Add Image</button>
 {{ form_end(editImageForm) }}
+
+<div class="mt-2"><a class="btn-primary delete" href="{{ path('app_product_delete', {product: product.id}) }}">Delete</a></div>
  {# {{ include("product/_product.html.twig", {product: product})}} #}
 
 <script>

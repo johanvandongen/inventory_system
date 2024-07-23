@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}All Categories{% endblock %}
+
+{% block bread %}
+    <li>/</li><li class="link-primary"><a href="{{ path('app_categories') }}">Categories</a></li>
+    <li>/</li><li class="link-primary active" aria-current="page">Edit</li>
+{% endblock %}
+
+
+{% block body %}
+
+<div>
+    <h1 class="title">All Categories</h1>
+    {% if categories|length > 0%}
+        <div class="flex gap-1 flex-wrap">
+            {% for category in categories %}
+                <div class="bg-blue-100 text-blue-800 text-sm font-medium me-2 px-2.5 py-0.5 rounded">
+                    {{ category.name }}
+                    <a class="l" href="{{ path('app_category_delete', {category: category.id}) }}">&cross;</a>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        No categories in database!
+    {% endif %}
+</div>
+{% endblock %}

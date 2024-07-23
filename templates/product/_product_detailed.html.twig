@@ -26,10 +26,12 @@
             {% endfor %}
         </div>
 
-        <div>
+        <div class="mb-1">
             <p class="font-bold">Category</p>
             {{ include('category/_category_list.html.twig', {categories: product.category})}}
         </div>
-        <a class="btn-primary mt-auto" href="{{ path('app_product_edit', {product: product.id}) }}">Edit</a>
+        <div class="mt-auto">
+            <a class="btn-primary" href="{{ path('app_product_edit', {product: product.id}) }}">Edit</a>
+        </div>
     </div>
 </div>
