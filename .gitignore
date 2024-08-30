@@ -10,6 +10,8 @@
 /node_modules/
 ###< symfony/framework-bundle ###
 
+/mysqldata
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
